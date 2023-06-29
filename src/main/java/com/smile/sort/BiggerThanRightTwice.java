@@ -6,15 +6,13 @@ import java.util.Arrays;
 
 /**
  * 在一个数组中，
- * 任何一个前面的数a，和任何一个后面的数b，
- * 如果(a,b)是降序的，就称为逆序对
- * 返回数组中所有的逆序对
+ * 对于每个数num，求有多少个后面的数 * 2 依然<num，求总个数
  * @author LiuXiBin
- * @since 2023/6/29 13:44
+ * @since 2023/6/29 15:44
  */
-public class ReversePair {
+public class BiggerThanRightTwice {
 
-    private static int getReversePairNumber(int[] arr) {
+    private static int getBiggerThanRightTwiceNumber(int[] arr) {
         if (arr == null || arr.length < 2) {
             return 0;
         }
@@ -26,34 +24,47 @@ public class ReversePair {
             return 0;
         }
         int middle = left + ((right - left) >> 1);
-
         return process(arr, left, middle) + process(arr, middle + 1, right) + merge(arr, left, middle, right);
     }
 
     private static int merge(int[] arr, int left, int middle, int right) {
-        int p1 = middle;
-        int p2 = right;
-        int[] help = new int[right - left + 1];
+        int p1 = left;
+        int p2 = middle + 1;
         int ans = 0;
-        for (int i = help.length - 1; i >= 0; i--) {
-            if (p1 < left) {
-                help[i] = arr[p2--];
-            } else if (p2 < middle + 1) {
-                help[i] = arr[p1--];
+        while (p1 <= middle) {
+            while (p2 <= right && arr[p1] > arr[p2] * 2) {
+                p2++;
+            }
+            ans += p2 - middle - 1;
+            p1++;
+        }
+
+        p1 = left;
+        p2 = middle + 1;
+        int[] help = new int[right - left + 1];
+
+        for (int i = 0; i < help.length; i++) {
+            if (p1 > middle) {
+                help[i] = arr[p2++];
+            } else if (p2 > right) {
+                help[i] = arr[p1++];
             } else {
-                ans += arr[p1] > arr[p2] ? p2 - middle : 0;
-                help[i] = arr[p1] > arr[p2] ? arr[p1--] : arr[p2--];
+                help[i] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
             }
         }
-        System.arraycopy(help, 0, arr, left, help.length);
+
+        for (int i = 0; i < help.length; i++) {
+            arr[left + i] = help[i];
+        }
         return ans;
+
     }
 
     private static int comparator(int[] arr) {
         int ans = 0;
         for (int i = 0; i < arr.length - 1; i++) {
             for (int k = i + 1; k < arr.length; k++) {
-                if (arr[i] > arr[k]) {
+                if (arr[i] > arr[k] * 2) {
                     ans++;
                 }
             }
@@ -69,15 +80,18 @@ public class ReversePair {
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = ArrayUtils.generateRandomArray(maxSize, maxValue);
             int[] arr2 = ArrayUtils.copyArray(arr1);
-            if (getReversePairNumber(arr1) != comparator(arr2)) {
+            int number1 = getBiggerThanRightTwiceNumber(arr1);
+            int number2 = comparator(arr2);
+            if (number1 != number2) {
                 System.out.println("Oops!");
+                System.out.println(number1);
                 System.out.println(Arrays.toString(arr1));
+                System.out.println(number2);
                 System.out.println(Arrays.toString(arr2));
                 break;
             }
         }
         System.out.println("测试结束");
     }
-
 
 }
