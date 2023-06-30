@@ -57,7 +57,7 @@ public class CountOfRangeSum {
             while (windowRight <= middle && sums[windowRight] <= max) {
                 windowRight++;
             }
-            ans += windowRight - windowLeft;
+            ans += Math.max(0, windowRight - windowLeft);
         }
 
         int p1 = left;
