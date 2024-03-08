@@ -335,18 +335,25 @@ public class EveryStepShowBoss {
 	}
 
 	public static void main(String[] args) {
-		int maxValue = 10;
-		int maxLen = 100;
-		int maxK = 6;
-		int testTimes = 100000;
+		int maxValue = 1000;
+		int maxLen = 10000;
+		int maxK = 10;
+		int testTimes = 10000;
 		System.out.println("测试开始");
+		long countTimeTopK = 0;
+		long countTimeCompare = 0;
 		for (int i = 0; i < testTimes; i++) {
 			Data testData = randomData(maxValue, maxLen);
 			int k = (int) (Math.random() * maxK) + 1;
 			int[] arr = testData.arr;
 			boolean[] op = testData.op;
+			long millis1 = System.currentTimeMillis();
 			List<List<Integer>> ans1 = topK(arr, op, k);
+			long millis2 = System.currentTimeMillis();
+			countTimeTopK += millis2 - millis1;
 			List<List<Integer>> ans2 = compare(arr, op, k);
+			long millis3 = System.currentTimeMillis();
+			countTimeCompare += millis3 - millis2;
 			if (!sameAnswer(ans1, ans2)) {
 				for (int j = 0; j < arr.length; j++) {
 					System.out.println(arr[j] + " , " + op[j]);
@@ -358,6 +365,8 @@ public class EveryStepShowBoss {
 				break;
 			}
 		}
+		System.out.println("topK总耗时：" + countTimeTopK + "ms");//16253ms
+		System.out.println("compare总耗时：" + countTimeCompare + "ms");//397894ms
 		System.out.println("测试结束");
 	}
 
