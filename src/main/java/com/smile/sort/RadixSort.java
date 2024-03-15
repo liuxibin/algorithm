@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2024/3/15 9:52
  */
 public class RadixSort {
-
+    // 队列实现方式 空间复杂度略高
     public static void sort1(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
@@ -59,12 +59,17 @@ public class RadixSort {
                 }
             }
         }
+        // 处理过负数问题 恢复数据
         if (minValue < 0) {
             int abs = Math.abs(minValue);
             for (int i = 0; i < arr.length; i++) {
                 arr[i] -= abs;
             }
         }
+    }
+
+    // 前缀和实现方式
+    public static void sort2(int[] arr) {
 
     }
 
