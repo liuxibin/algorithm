@@ -103,15 +103,13 @@ public class RadixSort {
                 countArr[dig]++;
             }
             // 求和数组
-            int[] sumArr = new int[10];
-            sumArr[0] = countArr[0];
             for (int k = 1; k < countArr.length; k++) {
-                sumArr[k] = sumArr[k-1] + countArr[k];
+                countArr[k] = countArr[k-1] + countArr[k];
             }
             // 排序
             for (int k = arr.length - 1; k >= 0; k--) {
                 int dig = (arr[k] / (int)Math.pow(10, i)) % 10;
-                help[--sumArr[dig]] = arr[k];
+                help[--countArr[dig]] = arr[k];
             }
             for (int k = 0; k < arr.length; k++) {
                 arr[k] = help[k];
