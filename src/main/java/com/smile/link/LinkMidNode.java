@@ -33,7 +33,7 @@ public class LinkMidNode {
         }
         // 慢指针，经历1.2.3.4.5.6
         Node<T> slow = node;
-        // 快指针，经历1.2.3.4.5.6
+        // 快指针，经历1.3.5.7.9
         Node<T> fast = node;
         while (fast != null && fast.next != null) {
             slow = slow.next;
