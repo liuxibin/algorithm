@@ -111,9 +111,7 @@ public class RadixSort {
                 int dig = (arr[k] / (int)Math.pow(10, i)) % 10;
                 help[--countArr[dig]] = arr[k];
             }
-            for (int k = 0; k < arr.length; k++) {
-                arr[k] = help[k];
-            }
+            System.arraycopy(help, 0, arr, 0, arr.length);
         }
         // 处理过负数问题 恢复数据
         if (minValue < 0) {
