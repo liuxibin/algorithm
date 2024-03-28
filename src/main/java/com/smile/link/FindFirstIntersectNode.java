@@ -8,6 +8,21 @@ import com.smile.link.domain.Node;
  */
 public class FindFirstIntersectNode {
 
+    public static <T> Node<T> getIntersectNode(Node<T> head1, Node<T> head2) {
+        if (head1 == null || head2 == null) {
+            return null;
+        }
+        Node<T> loop1 = getIntersectNode(head1);
+        Node<T> loop2 = getIntersectNode(head2);
+        if (loop1 == null && loop2 == null) {
+            return noLoop(head1, head2);
+        }
+        if (loop1 != null && loop2 != null) {
+            return bothLoop(head1, loop1, head2, loop2);
+        }
+        return null;
+    }
+
     public static <T> Node<T> getIntersectNode(Node<T> head) {
         if (head == null || head.next == null || head.next.next == null) {
             return null;
